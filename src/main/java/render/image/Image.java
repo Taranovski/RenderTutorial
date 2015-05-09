@@ -8,6 +8,7 @@ package render.image;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.RenderedImage;
+import render.obj.domain.element.Polygon;
 
 /**
  *
@@ -25,5 +26,9 @@ public interface Image {
 
     int getWidth();
 
-    int getHight();
+    int getHeight();
+
+    void drawWireFramePolygon(Polygon p, Color color);
+    
+    void drawPolygon(Polygon p, Color color);
 }

@@ -5,29 +5,11 @@
  */
 package render.util;
 
-import java.awt.Point;
-
 /**
  *
  * @author Alyx
  */
 public class Utils {
-
-    public static void swapPointCoords(Point p1) {
-        int temp = p1.y;
-        p1.y = p1.x;
-        p1.x = temp;
-    }
-
-    public static void swapPoints(Point p1, Point p2) {
-        int temp = p1.x;
-        p1.x = p2.x;
-        p2.x = temp;
-
-        temp = p1.y;
-        p1.y = p2.y;
-        p2.y = temp;
-    }
 
     public static int coordinateTransform(double value, int range, boolean reverse) {
         int coord = Math.round((float) ((value + 1) / 2 * (range - 1)));

@@ -6,7 +6,6 @@
 package render;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,10 +14,11 @@ import render.image.impl.ImageImpl;
 import render.io.ClassPathResourceReader;
 import render.io.ImageFileWriter;
 import render.obj.domain.ObjItem;
+import render.obj.domain.element.Group;
 import render.obj.domain.element.Polygon;
 import render.obj.parser.ObjParcer;
 import render.obj.parser.impl.SaxObjParserImpl;
-import render.util.Utils;
+import static render.util.Utils2.getRandomColor;
 
 /**
  *
@@ -46,30 +46,13 @@ public class Main {
         ObjParcer objParcer = new SaxObjParserImpl();
 
         ObjItem item = objParcer.parseObjItem(inputStream);
-
-        int[] x = new int[3];
-        int[] y = new int[3];
-
-        for (Polygon p : item.groups.get(0).polygons) {
-            Point p1 = new Point(
-                    Utils.coordinateTransform(p.polygonElement1.vertex.x, WIDTH, false),
-                    Utils.coordinateTransform(p.polygonElement1.vertex.y, HEIGHT, true));
-
-            Point p2 = new Point(
-                    Utils.coordinateTransform(p.polygonElement2.vertex.x, WIDTH, false),
-                    Utils.coordinateTransform(p.polygonElement2.vertex.y, HEIGHT, true));
-
-            Point p3 = new Point(
-                    Utils.coordinateTransform(p.polygonElement3.vertex.x, WIDTH, false),
-                    Utils.coordinateTransform(p.polygonElement3.vertex.y, HEIGHT, true));
-
-            image.drawLine(p1, p2, color);
-            image.drawLine(p2, p3, color);
-            image.drawLine(p3, p1, color);
+        for (Group g : item.groups) {
+            for (Polygon p : g.polygons) {
+                image.drawPolygon(p, getRandomColor());
+            }
         }
 
         ImageFileWriter.writeImageToFile("c:\\1.bmp", "bmp", image);
-
     }
 
 }
