@@ -5,20 +5,16 @@
  */
 package render.util;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
-import java.util.Random;
 
 /**
  *
  * @author Alyx
  */
 public class Utils2 {
-
-    private final static Random RANDOM = new Random();
 
     public static Image getImageFromArray(int[] pixels, int width, int height) {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -32,7 +28,5 @@ public class Utils2 {
         return pixels;
     }
 
-    public static Color getRandomColor() {
-        return new Color(RANDOM.nextInt(0xffffff));
-    }
+    
 }

@@ -5,23 +5,22 @@
  */
 package render.util;
 
+import java.awt.Color;
+import java.util.Random;
+
 /**
  *
  * @author Alyx
  */
 public class Utils {
 
-    public static int coordinateTransform(double value, int range, boolean reverse) {
-        int coord = Math.round((float) ((value + 1) / 2 * (range - 1)));
-        coord = reverse ? range - coord : coord;
-        if (coord < 0) {
-            coord = 0;
-        }
-        if (coord > range - 1) {
-            coord = range - 1;
-        }
+    private final static Random RANDOM = new Random();
 
-        return coord;
+    public static Color getLightIntencityColor(double intensity) {
+        return new Color((int) (intensity * 255), (int) (intensity * 255), (int) (intensity * 255));
     }
 
+    public static Color getRandomColor() {
+        return new Color(RANDOM.nextInt(0xffffff));
+    }
 }

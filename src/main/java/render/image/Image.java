@@ -6,8 +6,8 @@
 package render.image;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.image.RenderedImage;
+import render.image.impl.Voxel;
 import render.obj.domain.element.Polygon;
 
 /**
@@ -18,9 +18,11 @@ public interface Image {
 
     void setPixel(int i, int j, Color color);
 
-    void setPixel(Point point, Color color);
+    void setPixel(Voxel point);
+    
+    void setPixel(Voxel point, Color color);
 
-    void drawLine(Point p1, Point p2, Color color);
+    void drawLine(Voxel p1, Voxel p2, Color color);
 
     RenderedImage getSource();
 

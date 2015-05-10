@@ -5,7 +5,6 @@
  */
 package render;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,9 +15,10 @@ import render.io.ImageFileWriter;
 import render.obj.domain.ObjItem;
 import render.obj.domain.element.Group;
 import render.obj.domain.element.Polygon;
+import render.obj.domain.element.Vertex;
 import render.obj.parser.ObjParcer;
 import render.obj.parser.impl.SaxObjParserImpl;
-import static render.util.Utils2.getRandomColor;
+import static render.util.Utils.*;
 
 /**
  *
@@ -26,19 +26,18 @@ import static render.util.Utils2.getRandomColor;
  */
 public class Main {
 
-    private static final int WIDTH = 4096;
-    private static final int HEIGHT = 4096;
+    private static final int SCALE = 4096;
 
     private static final BufferedImage bi
-            = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+            = new BufferedImage(SCALE, SCALE, BufferedImage.TYPE_INT_RGB);
 
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
 
-        Image image = new ImageImpl(bi);
-        Color color = new Color(255, 0, 0);
+        Image image = new ImageImpl(bi, SCALE);
 
         InputStream inputStream = ClassPathResourceReader
                 .getResourceAsInputStream("head.obj");
@@ -46,12 +45,17 @@ public class Main {
         ObjParcer objParcer = new SaxObjParserImpl();
 
         ObjItem item = objParcer.parseObjItem(inputStream);
+
+        Vertex lightDirection = new Vertex(0, 0, -1);
+
         for (Group g : item.groups) {
             for (Polygon p : g.polygons) {
-                image.drawPolygon(p, getRandomColor());
+                double intensity = -p.normal.product(lightDirection);
+                if (intensity > 0) {
+                    image.drawPolygon(p, getLightIntencityColor(intensity));
+                }
             }
         }
-
         ImageFileWriter.writeImageToFile("c:\\1.bmp", "bmp", image);
     }
 
