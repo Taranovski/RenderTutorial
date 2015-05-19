@@ -16,6 +16,7 @@ public class Polygon {
     public PolygonElement polygonElement3;
 
     public Vertex normal;
+    public Vertex center;
 
     public Polygon(
             PolygonElement polygonElement1,
@@ -26,6 +27,12 @@ public class Polygon {
         this.polygonElement2 = polygonElement2;
         this.polygonElement3 = polygonElement3;
         normal = countNormal();
+
+        double x = (polygonElement1.vertex.x + polygonElement2.vertex.x + polygonElement3.vertex.x) / 3;
+        double y = (polygonElement1.vertex.y + polygonElement2.vertex.y + polygonElement3.vertex.y) / 3;
+        double z = (polygonElement1.vertex.z + polygonElement2.vertex.z + polygonElement3.vertex.z) / 3;
+
+        center = new Vertex(x, y, z);
     }
 
     private Vertex countNormal() {
