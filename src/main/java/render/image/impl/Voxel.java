@@ -5,7 +5,6 @@
  */
 package render.image.impl;
 
-import java.awt.Color;
 import render.obj.domain.element.Vertex;
 
 /**
@@ -17,8 +16,11 @@ public class Voxel {
     public int x;
     public int y;
     public int z;
-    public Color color;
+    public int rgb;
     public Vertex normal;
+
+    public double u;
+    public double v;
 
     public Voxel(int x, int y, int z) {
         this.x = x;
@@ -26,17 +28,26 @@ public class Voxel {
         this.z = z;
     }
 
-    public Voxel(int x, int y, int z, Color color, Vertex normal) {
+    public Voxel(int x, int y, int z, double u, double v) {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.color = color;
+        this.u = u;
+        this.v = v;
+    }
+
+    public Voxel(int x, int y, int z, double u, double v, Vertex normal) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.u = u;
+        this.v = v;
         this.normal = normal;
     }
 
     @Override
     public String toString() {
-        return "Voxel{" + "x=" + x + ", y=" + y + ", z=" + z + ", color=" + color + ", normal=" + normal + '}';
+        return "Voxel{" + "x=" + x + ", y=" + y + ", z=" + z + ", color=" + rgb + ", normal=" + normal + '}';
     }
 
 }

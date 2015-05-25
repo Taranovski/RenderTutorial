@@ -9,8 +9,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import render.image.Image;
-import render.obj.domain.element.Polygon;
-import static render.util.PointUtils.*;
+import render.util.VoxelUtils;
 
 /**
  *
@@ -23,14 +22,14 @@ public class ImageImpl implements Image {
     public final int sizeX;
     public final int sizeY;
 
-    public int[][][] visiblePixels;
+    public Voxel[][] visibleVoxels;
 
     public ImageImpl(BufferedImage bi, int scale) {
         this.bi = bi;
         this.scale = scale;
         sizeX = scale;
         sizeY = scale;
-        visiblePixels = new int[sizeY][sizeX][2];
+        visibleVoxels = new Voxel[sizeY][sizeX];
     }
 
     @Override
@@ -38,17 +37,6 @@ public class ImageImpl implements Image {
         bi.setRGB(i, j, color.getRGB());
     }
 
-//    @Override
-//    public void setPixel(Voxel point) {
-//        setPixel(point.x, point.y, point.color);
-//    }
-//    @Override
-//    public void drawLine(Voxel p1, Voxel p2, Color color) {
-//        List<Voxel> points = getLine(p1, p2);
-//        for (Voxel p : points) {
-//            setPixel(p, color);
-//        }
-//    }
     @Override
     public RenderedImage getSource() {
         return bi;
@@ -65,45 +53,12 @@ public class ImageImpl implements Image {
     }
 
     @Override
-    public void drawWireFramePolygon(Polygon p, Color color) {
-        Voxel p1 = getVoxel(p.polygonElement1.vertex, scale);
-        Voxel p2 = getVoxel(p.polygonElement2.vertex, scale);
-        Voxel p3 = getVoxel(p.polygonElement3.vertex, scale);
-
-//        drawLine(p1, p2, color);
-//        drawLine(p2, p3, color);
-//        drawLine(p3, p1, color);
-    }
-
-//    @Override
-//    public void drawPolygon(Polygon p, Color color) {
-//        Voxel p1 = getVoxel(p.polygonElement1.vertex, scale);
-//        Voxel p2 = getVoxel(p.polygonElement2.vertex, scale);
-//        Voxel p3 = getVoxel(p.polygonElement3.vertex, scale);
-//
-//        List<Voxel> polygon = getTrianglePoints(p1, p2, p3);
-//
-//        for (Voxel point : polygon) {
-//            setPixel(point, color);
-//        }
-//    }
-//
-//    @Override
-//    public void setPixel(Voxel point, Color color) {
-//        setPixel(point.x, point.y, color);
-//    }
-//
-//    @Override
-//    public void draw(List<Voxel> voxels) {
-//        for (Voxel v : voxels){
-//            setPixel(v);
-//        }
-//    }
-    @Override
     public void draw() {
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
-                bi.setRGB(x, y, visiblePixels[y][x][1]);
+                if (visibleVoxels[y][x] != null) {
+                    bi.setRGB(x, y, visibleVoxels[y][x].rgb);
+                }
             }
         }
     }
@@ -114,7 +69,27 @@ public class ImageImpl implements Image {
     }
 
     @Override
-    public int[][][] getVisible() {
-        return visiblePixels;
+    public Voxel[][] getVisible() {
+        return visibleVoxels;
+    }
+
+    @Override
+    public void fillTextures(BufferedImage textureImage) {
+        int scaleX = textureImage.getWidth();
+        int scaleY = textureImage.getHeight();
+        
+        System.out.println(scaleX);
+        System.out.println(scaleY);
+        
+        for (int y = 0; y < sizeY; y++) {
+            for (int x = 0; x < sizeX; x++) {
+                if (visibleVoxels[y][x] != null) {
+                    int tx = VoxelUtils.coordinateDirectTransform(visibleVoxels[y][x].u, scaleX, false);
+                    int ty = VoxelUtils.coordinateDirectTransform(visibleVoxels[y][x].v, scaleY, true);
+                    
+                    visibleVoxels[y][x].rgb = textureImage.getRGB(tx, ty);
+                }
+            }
+        }
     }
 }

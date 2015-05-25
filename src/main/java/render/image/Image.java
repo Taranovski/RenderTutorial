@@ -6,10 +6,9 @@
 package render.image;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.util.List;
 import render.image.impl.Voxel;
-import render.obj.domain.element.Polygon;
 
 /**
  *
@@ -19,12 +18,6 @@ public interface Image {
 
     void setPixel(int i, int j, Color color);
 
-//    void setPixel(Voxel point);
-    
-//    void setPixel(Voxel point, Color color);
-
-//    void drawLine(Voxel p1, Voxel p2, Color color);
-
     RenderedImage getSource();
 
     int getWidth();
@@ -33,13 +26,9 @@ public interface Image {
     
     int getScale();
 
-    void drawWireFramePolygon(Polygon p, Color color);
-    
-//    void drawPolygon(Polygon p, Color color);
-    
-//    void draw(List<Voxel> voxels);
-
-    int[][][] getVisible();
+    Voxel[][] getVisible();
     
     void draw();
+
+    public void fillTextures(BufferedImage textureImage);
 }
