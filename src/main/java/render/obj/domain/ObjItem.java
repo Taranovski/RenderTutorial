@@ -23,7 +23,7 @@ public class ObjItem {
     
     public List<Vertex> vertices = new ArrayList<>();
     public List<TextureCoordinate> textureCoordinates = new ArrayList<>();
-    public List<VertexNormal> vertexNormals = new ArrayList<>();
+    public List<Vertex> vertexNormals = new ArrayList<>();
     
     public List<Group> groups = new ArrayList<>();
 

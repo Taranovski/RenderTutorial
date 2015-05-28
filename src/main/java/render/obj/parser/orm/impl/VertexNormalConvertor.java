@@ -5,6 +5,7 @@
  */
 package render.obj.parser.orm.impl;
 
+import render.obj.domain.element.Vertex;
 import render.obj.domain.element.VertexNormal;
 import render.obj.parser.orm.Convertor;
 
@@ -12,21 +13,21 @@ import render.obj.parser.orm.Convertor;
  *
  * @author Alyx
  */
-public class VertexNormalConvertor implements Convertor<VertexNormal> {
+public class VertexNormalConvertor implements Convertor<Vertex> {
 
     private static final String IDENTIFIER = "vn";
     
     @Override
-    public VertexNormal fromObjString(String string) {
+    public Vertex fromObjString(String string) {
         String[] strings = string.split(DELIMITER_REGEXP);
         double d1 = Double.parseDouble(strings[1]);
         double d2 = Double.parseDouble(strings[2]);
         double d3 = Double.parseDouble(strings[3]);
-        return new VertexNormal(d1, d2, d3);
+        return new Vertex(d1, d2, d3);
     }
 
     @Override
-    public String toObjString(VertexNormal t) {
+    public String toObjString(Vertex t) {
         return IDENTIFIER + t.x + DELIMITER + t.y + DELIMITER + t.z;
     }
     

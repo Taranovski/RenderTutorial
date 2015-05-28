@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import render.image.Image;
+import render.obj.domain.element.Vertex;
 import render.util.VoxelUtils;
 
 /**
@@ -77,19 +78,50 @@ public class ImageImpl implements Image {
     public void fillTextures(BufferedImage textureImage) {
         int scaleX = textureImage.getWidth();
         int scaleY = textureImage.getHeight();
-        
-        System.out.println(scaleX);
-        System.out.println(scaleY);
-        
+
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
                 if (visibleVoxels[y][x] != null) {
                     int tx = VoxelUtils.coordinateDirectTransform(visibleVoxels[y][x].u, scaleX, false);
                     int ty = VoxelUtils.coordinateDirectTransform(visibleVoxels[y][x].v, scaleY, true);
-                    
+
                     visibleVoxels[y][x].rgb = textureImage.getRGB(tx, ty);
                 }
             }
         }
+    }
+
+    @Override
+    public void fillLightning(Vertex lightDirection) {
+        for (int y = 0; y < sizeY; y++) {
+            for (int x = 0; x < sizeX; x++) {
+                if (visibleVoxels[y][x] != null) {
+                    fixLightning(visibleVoxels[y][x], lightDirection);
+                }
+            }
+        }
+    }
+
+    private void fixLightning(Voxel visibleVoxel, Vertex lightDirection) {
+        double intensity = -visibleVoxel.normal.product(lightDirection);
+        if (intensity < 0) {
+            intensity = 0;
+        }
+        visibleVoxel.rgb = adjustColor(visibleVoxel.rgb, intensity);
+    }
+
+    private int adjustColor(int rgb, double intensity) {
+        int red = (rgb >> 16) & 0xFF;
+        int green = (rgb >> 8) & 0xFF;
+        int blue = rgb & 0xFF;
+
+        red = (int) (red * intensity);
+        green = (int) (green * intensity);
+        blue = (int) (blue * intensity);
+
+        int newRgb = red;
+        newRgb = (newRgb << 8) + green;
+        newRgb = (newRgb << 8) + blue;
+        return newRgb;
     }
 }

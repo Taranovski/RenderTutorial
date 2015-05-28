@@ -12,12 +12,12 @@ package render.obj.domain.element;
 public class PolygonElement {
     public Vertex vertex;
     public TextureCoordinate textureCoordinate;
-    public VertexNormal vertexNormal;
+    public Vertex vertexNormal;
 
     public PolygonElement(
             Vertex vertex, 
             TextureCoordinate textureCoordinate, 
-            VertexNormal vertexNormal
+            Vertex vertexNormal
     ) {
         this.vertex = vertex;
         this.textureCoordinate = textureCoordinate;

@@ -56,4 +56,8 @@ public class Vertex {
         return "Vertex{" + "x=" + x + ", y=" + y + ", z=" + z + ", length=" + length + '}';
     }
 
+    Vertex plus(Vertex other) {
+        return new Vertex(x + other.x, y + other.y, z + other.z);
+    }
+
 }

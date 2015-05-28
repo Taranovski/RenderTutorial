@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import render.image.impl.Voxel;
+import render.obj.domain.element.Vertex;
 
 /**
  *
@@ -31,4 +32,6 @@ public interface Image {
     void draw();
 
     public void fillTextures(BufferedImage textureImage);
+    
+    public void fillLightning(Vertex lightDirection);
 }
